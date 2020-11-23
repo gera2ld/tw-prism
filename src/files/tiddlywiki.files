@@ -1,0 +1,21 @@
+{
+  "tiddlers": [
+    {
+      "file": "prism.js",
+      "fields": {
+        "type": "application/javascript",
+        "title": "$:/plugins/gera2ld/prism/prism.js",
+        "module-type": "library"
+      },
+      "suffix": "\nmodule.exports = Prism;\n"
+    },
+    {
+      "file": "prism-tomorrow.css",
+      "fields": {
+        "type": "text/css",
+        "title": "$:/plugins/gera2ld/prism/prism-tomorrow.css",
+        "tags": "[[$:/tags/Stylesheet]]"
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "tw-prism",
+  "version": "0.0.0",
+  "description": "TiddlyWiki plugin to provide syntax highlight with PrismJS",
+  "author": "Gerald <gera2ld@live.com>",
+  "license": "MIT",
+  "scripts": {
+    "clean": "gulp clean",
+    "build:js": "gulp build",
+    "prebuild": "npm run clean",
+    "prepublishOnly": "npm run build",
+    "build": "npm run build:js"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "prismjs": "^1.22.0"
+  },
+  "devDependencies": {
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-header": "^2.0.9",
+    "gulp-order": "^1.2.0",
+    "gulp-replace": "^1.0.0"
+  },
+  "repository": "git@github.com:gera2ld/tw-prism.git"
+}

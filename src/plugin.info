@@ -1,0 +1,11 @@
+{
+  "title": "$:/plugins/gera2ld/prism",
+  "name": "Prism",
+  "description": "Syntax highlight with PrismJS",
+  "author": "Gerald",
+  "version": "process.env.VERSION",
+  "core-version": ">=5.0.8",
+  "source": "https://github.com/gera2ld/tw-prism",
+  "plugin-type": "plugin",
+  "list": "readme"
+}
