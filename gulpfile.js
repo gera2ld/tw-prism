@@ -1,8 +1,8 @@
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const order = require('gulp-order');
-const header = require('gulp-header');
 const replace = require('gulp-replace');
+const terser = require('gulp-terser-js');
 const del = require('del');
 const components = require('prismjs/components');
 const pkg = require('./package.json');
@@ -33,10 +33,7 @@ function build() {
   ])
     .pipe(order(orderKeys))
     .pipe(concat('prism.js', { newLine: ';' }))
-    .pipe(header(`/*
-type: application/javascript
-*/
-`))
+    .pipe(terser())
     .pipe(gulp.dest(`${DIST}/files`));
 }
 

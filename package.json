@@ -25,9 +25,9 @@
     "del": "^6.0.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
-    "gulp-header": "^2.0.9",
     "gulp-order": "^1.2.0",
-    "gulp-replace": "^1.0.0"
+    "gulp-replace": "^1.0.0",
+    "gulp-terser-js": "^5.2.2"
   },
   "repository": "git@github.com:gera2ld/tw-prism.git"
 }
