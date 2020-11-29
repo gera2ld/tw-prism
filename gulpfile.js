@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const replace = require('gulp-replace');
-const terser = require('gulp-terser-js');
+// const terser = require('gulp-terser-js');
 const del = require('del');
 const components = require('prismjs/components');
 const pkg = require('./package.json');
@@ -87,11 +87,11 @@ function clean() {
 
 function build() {
   return gulp.src([
-    'node_modules/prismjs/components/prism-core.js',
+    'node_modules/prismjs/components/prism-core.min.js',
     ...keys.map(key => `node_modules/prismjs/components/prism-${key}.min.js`),
   ])
     .pipe(concat('prism.js', { newLine: ';' }))
-    .pipe(terser())
+    // .pipe(terser())
     .pipe(gulp.dest(`${DIST}/files`));
 }
 
