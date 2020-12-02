@@ -1,0 +1,9 @@
+{
+  "description": "Basic client-server edition",
+  "plugins": [
+    "gera2ld/prism"
+  ],
+  "themes": [
+    "tiddlywiki/snowwhite"
+  ]
+}

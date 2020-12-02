@@ -7,6 +7,7 @@ const components = require('prismjs/components');
 const pkg = require('./package.json');
 
 const DIST = 'dist';
+const DIST_PRISM = `${DIST}/gera2ld/prism`;
 // const languages = Object.keys(components.languages).filter(key => key !== 'meta');
 const keys = [];
 [
@@ -92,19 +93,24 @@ function build() {
   ])
     .pipe(concat('prism.js', { newLine: ';' }))
     // .pipe(terser())
-    .pipe(gulp.dest(`${DIST}/files`));
+    .pipe(gulp.dest(`${DIST_PRISM}/files`));
 }
 
 function copy() {
   return gulp.src('src/**')
     .pipe(replace('process.env.VERSION', pkg.version))
-    .pipe(gulp.dest(DIST));
+    .pipe(gulp.dest(DIST_PRISM));
+}
+
+function copyFixtures() {
+  return gulp.src('fixtures/**')
+    .pipe(gulp.dest(`${DIST}/data`));
 }
 
 function copyFiles() {
   return gulp.src('node_modules/prismjs/themes/prism-tomorrow.css')
-    .pipe(gulp.dest(`${DIST}/files`));
+    .pipe(gulp.dest(`${DIST_PRISM}/files`));
 }
 
 exports.clean = clean;
-exports.build = gulp.parallel(build, copy, copyFiles);
+exports.build = gulp.parallel(build, copy, copyFixtures, copyFiles);

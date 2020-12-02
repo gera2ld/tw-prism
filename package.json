@@ -4,12 +4,13 @@
   "description": "TiddlyWiki plugin to provide syntax highlight with PrismJS",
   "author": "Gerald <gera2ld@live.com>",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "clean": "gulp clean",
-    "build:js": "gulp build",
     "prebuild": "npm run clean",
-    "prepublishOnly": "npm run build",
-    "build": "npm run build:js"
+    "build:js": "gulp build",
+    "build:tw": "TIDDLYWIKI_PLUGIN_PATH=dist tiddlywiki dist/data --render '$:/plugins/gera2ld/prism' prism.json text/plain '$:/core/templates/json-tiddler'",
+    "build": "npm run build:js && npm run build:tw"
   },
   "publishConfig": {
     "access": "public",
@@ -26,7 +27,8 @@
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-replace": "^1.0.0",
-    "gulp-terser-js": "^5.2.2"
+    "gulp-terser-js": "^5.2.2",
+    "tiddlywiki": "^5.1.22"
   },
   "repository": "git@github.com:gera2ld/tw-prism.git"
 }
