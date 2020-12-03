@@ -9,7 +9,7 @@
     "clean": "gulp clean",
     "prebuild": "npm run clean",
     "build:js": "gulp build",
-    "build:tw": "TIDDLYWIKI_PLUGIN_PATH=dist tiddlywiki dist/data --render '$:/plugins/gera2ld/prism' prism.json text/plain '$:/core/templates/json-tiddler'",
+    "build:tw": "TIDDLYWIKI_PLUGIN_PATH=dist tiddlywiki dist/data --build",
     "build": "npm run build:js && npm run build:tw"
   },
   "publishConfig": {
