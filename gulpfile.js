@@ -8,6 +8,7 @@ const pkg = require('./package.json');
 
 const DIST = 'dist';
 const DIST_PRISM = `${DIST}/gera2ld/prism`;
+const THEME_CSS = 'prism-tomorrow.css';
 // const languages = Object.keys(components.languages).filter(key => key !== 'meta');
 const keys = [];
 [
@@ -96,9 +97,14 @@ function build() {
     .pipe(gulp.dest(`${DIST_PRISM}/files`));
 }
 
+const values = {
+  VERSION: pkg.version,
+  THEME_CSS,
+};
+
 function copy() {
   return gulp.src('src/**')
-    .pipe(replace('process.env.VERSION', pkg.version))
+    .pipe(replace(/process.env.(\w+)/g, (m, g) => values[g] || m))
     .pipe(gulp.dest(DIST_PRISM));
 }
 
@@ -108,7 +114,7 @@ function copyFixtures() {
 }
 
 function copyFiles() {
-  return gulp.src('node_modules/prismjs/themes/prism-tomorrow.css')
+  return gulp.src(`node_modules/prismjs/themes/${THEME_CSS}`)
     .pipe(gulp.dest(`${DIST_PRISM}/files`));
 }
 

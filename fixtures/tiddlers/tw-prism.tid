@@ -1,7 +1,13 @@
 title: tw-prism
 type: text/vnd.tiddlywiki
 
-Drag [[$:/plugins/gera2ld/prism]] to your ~TiddlyWiki to install.
+! Installation
+
+To add the plugin to your own ~TiddlyWiki, just drag the link below to your ~TiddlyWiki window.
+
+[[$:/plugins/gera2ld/prism]]
+
+Disable [[$:/plugins/tiddlywiki/highlight]] to make this plugin work.
 
 ```js
 console.log('Hello, TiddlyWiki!');
