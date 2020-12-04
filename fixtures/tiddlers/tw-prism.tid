@@ -2,3 +2,7 @@ title: tw-prism
 type: text/vnd.tiddlywiki
 
 Drag [[$:/plugins/gera2ld/prism]] to your ~TiddlyWiki to install.
+
+```js
+console.log('Hello, TiddlyWiki!');
+```
