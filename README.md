@@ -4,7 +4,7 @@ This is a [TiddlyWiki](https://tiddlywiki.com/) plugin for syntax highlight with
 
 Offers a substitute to TiddlyWiki's official implementation of [HighlightJS](https://highlightjs.org/) to highlight code:
 
-![image](https://github.com/SonephetR2/TW5-randomtiddlerbutton/blob/main/PrismJSvHighlightJS.png)
+![image](/blob/main/PrismJSvHighlightJS.png)
 
 ## Installation
 
