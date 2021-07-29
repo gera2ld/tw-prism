@@ -1,5 +1,7 @@
 # tw-prism
 
+![](https://img.shields.io/github/package-json/v/gera2ld/tw-prism)
+
 This is a [TiddlyWiki](https://tiddlywiki.com/) plugin for syntax highlight with [PrismJS](https://prismjs.com/).
 
 Demo: <https://gera2ld.github.io/tw-prism/>.

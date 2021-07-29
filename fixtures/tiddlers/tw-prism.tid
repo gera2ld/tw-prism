@@ -3,6 +3,8 @@ type: text/vnd.tiddlywiki
 
 ! Installation
 
+[img[https://img.shields.io/github/package-json/v/gera2ld/tw-prism]]
+
 To add the plugin to your own ~TiddlyWiki, just drag the link below to your ~TiddlyWiki window.
 
 [[$:/plugins/gera2ld/prism]]
