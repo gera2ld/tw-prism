@@ -10,5 +10,13 @@ To add the plugin to your own ~TiddlyWiki, just drag the link below to your ~Tid
 Disable [[$:/plugins/tiddlywiki/highlight]] to make this plugin work.
 
 ```js
-console.log('Hello, TiddlyWiki!');
+console.log('Hello, JavaScript!');
+```
+
+```py
+print('Hello, Python!')
+```
+
+```
+plain text
 ```
