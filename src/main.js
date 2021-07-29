@@ -12,8 +12,9 @@ const CodeBlockWidget = require('$:/core/modules/widgets/codeblock.js').codebloc
 CodeBlockWidget.prototype.postRender = function postRender() {
   const domNode = this.domNodes[0];
   const { language } = this;
+  // Make sure a `language-` class name is added so that the codeblock will have the same appearance
+  domNode.className = `language-${(language || '').toLowerCase()}`;
   if (language && Prism.languages[language]) {
-    domNode.className = `language-${language.toLowerCase()}`;
     if ($tw.browser && !domNode.isTiddlyWikiFakeDom) {
       Prism.highlightElement(domNode);
     } else {
