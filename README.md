@@ -12,7 +12,9 @@ There is an official tiddlywiki [plugin](https://github.com/Jermolene/TiddlyWiki
 
 This plugin was created with automation in mind.
 
-Dependencies like PrismJS are defined in package.json and can be easily updated to the latest version with the help of [npm-check-updates](https://github.com/raineorshine/npm-check-updates). Supported languages and additional aliases are defined in gulpfile.js.
+Dependencies like PrismJS are defined in package.json and can be easily updated to the latest version with the help of [npm-check-updates](https://github.com/raineorshine/npm-check-updates). Supported languages and additional aliases are defined in `scripts/build.mjs`.
+
+A dedicated tool for customization is coming soon. You will be able to pick the languages you like and your favorite theme there.
 
 ## Installation
 
