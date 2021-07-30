@@ -145,7 +145,7 @@ async function build() {
   const prismTiddlers = await buildPrism({
     prefix: PREFIX,
     languages,
-    theme: 'tomorrow',
+    theme: '',
     aliases,
     loadPrismComponent,
     loadPrismCss,
