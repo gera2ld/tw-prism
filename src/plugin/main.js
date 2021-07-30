@@ -1,5 +1,5 @@
 /*\
-title: $:/plugins/gera2ld/prism/main.js
+title: process.env.PREFIX/main.js
 type: application/javascript
 module-type: widget
 

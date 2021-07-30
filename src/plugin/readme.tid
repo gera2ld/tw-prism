@@ -1,4 +1,4 @@
-title: $:/plugins/gera2ld/prism/readme
+title: process.env.PREFIX/readme
 
 This is a TiddlyWiki plugin for syntax highlight with PrismJS.
 

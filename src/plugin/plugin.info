@@ -1,8 +1,8 @@
 {
-  "title": "$:/plugins/gera2ld/prism",
+  "title": "process.env.PREFIX",
   "name": "Prism",
   "description": "Syntax highlight with PrismJS",
-  "author": "Gerald",
+  "author": "Gerald <gera2ld@live.com>",
   "version": "process.env.VERSION",
   "core-version": ">=5.0.8",
   "source": "https://github.com/gera2ld/tw-prism",

@@ -10,10 +10,10 @@
       "suffix": "\nmodule.exports = Prism;\n"
     },
     {
-      "file": "process.env.THEME_CSS",
+      "file": "prism.css",
       "fields": {
         "type": "text/css",
-        "title": "$:/plugins/gera2ld/prism/process.env.THEME_CSS",
+        "title": "$:/plugins/gera2ld/prism/prism.css",
         "tags": "[[$:/tags/Stylesheet]]"
       }
     }
