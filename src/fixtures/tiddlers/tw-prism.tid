@@ -3,7 +3,7 @@ type: text/vnd.tiddlywiki
 
 ! Installation
 
-[img[https://img.shields.io/github/package-json/v/gera2ld/tw-prism]]
+[img[https://img.shields.io/github/package-json/v/gera2ld/tw-prism]] <a href="https://github.com/gera2ld/tw-prism" target="_blank" rel="noreferrer noopener">[img[https://img.shields.io/github/stars/gera2ld/tw-prism?style=social]]</a>
 
 To add the plugin to your own ~TiddlyWiki, just drag the link below to your ~TiddlyWiki window.
 
