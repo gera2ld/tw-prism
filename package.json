@@ -6,9 +6,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "dev": "plaid develop",
+    "build:tool": "plaid build -k",
     "build:js": "node scripts/build.mjs",
     "build:tw": "TIDDLYWIKI_PLUGIN_PATH=dist tiddlywiki dist/data --build",
-    "build": "npm run build:js && npm run build:tw"
+    "build": "run-s build:js build:tw build:tool"
   },
   "publishConfig": {
     "access": "public",
@@ -18,7 +20,11 @@
     "prismjs": "^1.24.1"
   },
   "devDependencies": {
+    "@gera2ld/plaid": "^2.3.4-alpha.0",
+    "@gera2ld/plaid-webpack": "^2.3.4-alpha.2",
+    "@gera2ld/plaid-webpack-svelte": "^2.3.4-alpha.0",
     "del": "^6.0.0",
+    "svelte": "^3.41.0",
     "tiddlywiki": "^5.1.23"
   },
   "repository": "git@github.com:gera2ld/tw-prism.git"

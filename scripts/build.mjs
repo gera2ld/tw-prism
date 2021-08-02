@@ -2,23 +2,24 @@ import fsPromises from 'fs/promises';
 import path from 'path';
 import del from 'del';
 import components from 'prismjs/components.js';
-import { buildPrism, getFiles } from './plugin.mjs';
+import { buildPrism, getFiles, resolveLanguages } from './plugin.mjs';
 
 const PREFIX = '$:/plugins/gera2ld/prism';
 const DIST = 'dist';
 const DIST_PRISM = `${DIST}/gera2ld/prism`;
 const DIST_DATA = `${DIST}/data`;
-const languageDependencies = Object.keys(components.languages).reduce((map, key) => {
-  let req = components.languages[key].require;
-  if (typeof req === 'string') req = [req];
-  if (req?.length) map[key] = req;
-  return map;
-}, {});
+const allLanguages = Object.keys(components.languages).filter(key => key !== 'meta').sort();
+const dependencies = {};
+const aliases = {};
+Object.entries(components.languages).forEach(([key, value]) => {
+  const r = ensureArray(value.require);
+  if (r.length) dependencies[key] = r;
+  const a = ensureArray(value.alias);
+  if (a.length) aliases[key] = a;
+});
 const isProd = false;
 // const isProd = process.env.NODE_ENV === 'production';
-// const languages = Object.keys(components.languages).filter(key => key !== 'meta');
-const languages = [];
-[
+const defaultLanguages = [
   'markup',
   'css',
   'clike',
@@ -80,17 +81,12 @@ const languages = [];
   'vim',
   'wasm',
   'yaml',
-].forEach(addLanguage);
+];
+const languages = resolveLanguages(defaultLanguages, dependencies);
 
-const aliases = {
+const userAliases = {
   bash: ['sh'],
 };
-
-function addLanguage(key) {
-  if (languages.includes(key)) return;
-  languageDependencies[key]?.forEach(addLanguage);
-  languages.push(key);
-}
 
 function clean() {
   return del([DIST]);
@@ -105,7 +101,12 @@ async function loadPrismCss(name) {
   return fsPromises.readFile(`node_modules/prismjs/themes/${filename}`, 'utf8');
 }
 
-const getPkg = memoize(async () => JSON.parse(await fsPromises.readFile('package.json', 'utf8')));
+async function loadJSON(file) {
+  return JSON.parse(await fsPromises.readFile(file, 'utf8'));
+}
+
+const getPkg = memoize(async () => loadJSON('package.json'));
+const getPrismPkg = memoize(async () => loadJSON('node_modules/prismjs/package.json'));
 const getValues = memoize(async () => {
   const pkg = await getPkg();
   return {
@@ -113,8 +114,14 @@ const getValues = memoize(async () => {
     PREFIX,
   };
 });
+const getThemes = memoize(async () => {
+  const files = await fsPromises.readdir('node_modules/prismjs/themes');
+  const themes = files.map(file => file.replace(/^prism(?:-(\w+))?\.css$/, (m, g) => m && (g || ''))).filter(v => v != null);
+  return themes;
+});
 
 async function loadPluginFile(filename) {
+  if (!filename.includes('.')) filename += '.tid';
   let text = await fsPromises.readFile(`src/plugin/${filename}`, 'utf8');
   const values = await getValues();
   text = text.replace(/process\.env\.(\w+)/g, (m, g) => values[g] || m);
@@ -136,7 +143,7 @@ async function loadTiddler(filename) {
 
 async function loadData() {
   const pluginInfo = JSON.parse(await loadPluginFile('plugin.info'));
-  const tiddlers = await Promise.all(['main.js', 'readme.tid'].map(loadTiddler));
+  const tiddlers = await Promise.all(['main.js', 'readme'].map(loadTiddler));
   return { pluginInfo, tiddlers };
 }
 
@@ -146,7 +153,7 @@ async function build() {
     prefix: PREFIX,
     languages,
     theme: '',
-    aliases,
+    userAliases,
     loadPrismComponent,
     loadPrismCss,
   });
@@ -156,6 +163,25 @@ async function build() {
     await fsPromises.mkdir(path.dirname(fullpath), { recursive: true });
     await fsPromises.writeFile(fullpath, file.text, 'utf8');
   }
+}
+
+async function createMeta() {
+  const { pluginInfo, tiddlers } = await loadData();
+  const themes = await getThemes();
+  const prismPkg = await getPrismPkg();
+  const meta = {
+    pluginInfo,
+    tiddlers,
+    prismVersion: prismPkg.version,
+    prefix: PREFIX,
+    allLanguages,
+    defaultLanguages,
+    dependencies,
+    themes,
+    aliases,
+    userAliases,
+  };
+  await fsPromises.writeFile('src/pages/meta.json', JSON.stringify(meta, null, 2));
 }
 
 function copyFixtures() {
@@ -189,10 +215,15 @@ function memoize(fn) {
   };
 }
 
+function ensureArray(data) {
+  return typeof data === 'string' ? [data] : data || [];
+}
+
 async function main() {
   await clean();
   await build();
   await copyFixtures();
+  await createMeta();
 }
 
 main();

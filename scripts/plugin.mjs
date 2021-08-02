@@ -5,6 +5,7 @@ export function buildPluginUrl({ pluginInfo, tiddlers, prismTiddlers }) {
   }), {});
   const jsonData = {
     ...pluginInfo,
+    type: 'application/json',
     text: JSON.stringify({ tiddlers: tiddlerMap }),
   };
   return 'data:text/vnd.tiddler,' + encodeURIComponent(JSON.stringify(jsonData));
@@ -14,17 +15,17 @@ export async function buildPrism({
   prefix,
   languages,
   theme,
-  aliases,
+  userAliases,
   loadPrismComponent,
   loadPrismCss,
 }) {
-  const unresolved = Object.keys(aliases).find(key => !languages.includes(key));
+  const unresolved = Object.keys(userAliases).find(key => !languages.includes(key));
   if (unresolved) {
     throw new Error(`Language not found: ${unresolved}`);
   }
   const footer = `(${aliases => Object.entries(aliases).forEach(([k, v]) => v.forEach(a => {
     Prism.languages[a] = Prism.languages[k];
-  }))})(${JSON.stringify(aliases)});module.exports=Prism`;
+  }))})(${JSON.stringify(userAliases)});module.exports=Prism`;
   const [chunks, css] = await Promise.all([
     Promise.all(['core', ...languages].map(loadPrismComponent)),
     loadPrismCss(theme),
@@ -55,7 +56,8 @@ export function getFiles({ pluginInfo, tiddlers }) {
   ];
   const fileMeta = { tiddlers: [] };
   for (const tiddler of tiddlers) {
-    const filename = tiddler.title.split('/').pop();
+    let filename = tiddler.title.split('/').pop();
+    if (!filename.includes('.')) filename += '.tid';
     if (!tiddler.type || tiddler['module-type'] === 'widget') {
       files.push({
         path: filename,
@@ -84,4 +86,25 @@ function omit(obj, keys) {
     if (!keys.includes(k)) r[k] = obj[k];
     return r;
   }, {});
+}
+
+function resolveLanguage(lang, dependencies, resolved) {
+  const result = [];
+  if (!resolved.has(lang)) {
+    dependencies[lang]?.forEach(dep => {
+      result.push(...resolveLanguage(dep, dependencies, resolved));
+    });
+    resolved.add(lang);
+    result.push(lang);
+  }
+  return result;
+}
+
+export function resolveLanguages(languages, dependencies) {
+  const result = [];
+  const resolved = new Set();
+  for (const lang of languages) {
+    result.push(...resolveLanguage(lang, dependencies, resolved));
+  }
+  return result;
 }

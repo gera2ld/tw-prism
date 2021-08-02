@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+
+body {
+  @apply p-4;
+}
+
+header img {
+  @apply inline;
+}
+
+section {
+  @apply my-2;
+}
+
+h1 {
+  @apply mt-2 mb-1 text-3xl;
+}
+
+h2 {
+  @apply mt-2 mb-1 text-2xl;
+}
+
+select {
+  @apply border border-gray-300 cursor-pointer;
+  &:hover,
+  &:focus {
+    @apply border-gray-500;
+  }
+}
+
+label {
+  @apply w-60 px-1 cursor-pointer;
+  &:hover,
+  &:focus {
+    @apply bg-gray-100;
+  }
+}
+
+textarea {
+  @apply block w-full border border-gray-300;
+  &:hover,
+  &:focus {
+    @apply border-gray-500;
+  }
+}
+
+button {
+  @apply border border-gray-300 rounded px-2 cursor-pointer;
+  &:hover,
+  &:focus {
+    @apply border-gray-500;
+  }
+}
+
+a {
+  @apply text-blue-500;
+  &:hover,
+  &.active {
+    @apply text-blue-600;
+  }
+}
+
+@tailwind utilities;
