@@ -101,7 +101,8 @@ async function handleGenerate() {
 <h1>Customize PrismJS for TiddlyWiki</h1>
 <p class="text-gray-400">Pick what you like and build your own plugin</p>
 <p>
-<img class="ml-1" src="https://img.shields.io/github/package-json/v/gera2ld/tw-prism" alt="">
+<img class="ml-1" src="https://img.shields.io/github/package-json/v/gera2ld/tw-prism" alt="version">
+<img class="ml-1" src={`https://img.shields.io/badge/PrismJS-${meta.prismVersion}-brightgreen`} alt="prismVersion">
 <a class="ml-1" href="https://github.com/gera2ld/tw-prism">
   <img src="https://img.shields.io/github/stars/gera2ld/tw-prism?style=social" alt="tw-prism">
 </a>
