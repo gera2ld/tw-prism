@@ -14,7 +14,7 @@ This plugin was created with automation in mind.
 
 Dependencies like PrismJS are defined in package.json and can be easily updated to the latest version with the help of [npm-check-updates](https://github.com/raineorshine/npm-check-updates). Supported languages and additional aliases are defined in `scripts/build.mjs`.
 
-A dedicated tool for customization is coming soon. You will be able to pick the languages you like and your favorite theme there.
+There is [a dedicated tool](https://gera2ld.github.io/tw-prism/diy.html) for customization of this plugin. You can pick the languages you like and your favorite theme there.
 
 ## Installation
 
