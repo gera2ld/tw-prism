@@ -31,3 +31,14 @@ $ yarn build
 The generated plugin can be found at `dist/gera2ld/prism`.
 
 To visit the demo, open `dist/data/output/index.html`.
+
+## Local usage
+
+```bash
+# Link dist/gera2ld/prism to your plugins directory
+$ mkdir -p plugins/gera2ld
+$ ln -s /path/to/tw-prism/dist/gera2ld/prism plugins/gera2ld
+
+# Start server with TIDDLYWIKI_PLUGIN_PATH
+$ TIDDLYWIKI_PLUGIN_PATH=plugins tiddlywiki data
+```
