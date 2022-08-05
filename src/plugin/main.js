@@ -16,7 +16,23 @@ CodeBlockWidget.prototype.postRender = function postRender() {
   domNode.className = `language-${(language || '').toLowerCase()}`;
   if (language && Prism.languages[language]) {
     if ($tw.browser && !domNode.isTiddlyWikiFakeDom) {
-      Prism.highlightElement(domNode);
+      const code = domNode.querySelector('code');
+      let config;
+      const text = code.textContent;
+      const i = text.indexOf('\n');
+      if (i > 0 && text[i + 1] === '\n') {
+        const firstRow = text.slice(0, i);
+        const matches = firstRow.match(/\bprism: (\{.*\})/);
+        try {
+          config = matches && JSON.parse(matches[1]);
+        } catch {
+          // noop
+        }
+        if (config) code.textContent = text.slice(i + 2);
+      }
+      if (config?.line) domNode.dataset.line = config.line;
+      if (config?.lineNumbers !== false) domNode.classList.add('line-numbers');
+      Prism.highlightElement(code);
     } else {
       const text = domNode.textContent;
       domNode.children[0].innerHTML = Prism.highlight(text, Prism.languages[language], language);

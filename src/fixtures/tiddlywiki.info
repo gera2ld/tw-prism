@@ -3,6 +3,7 @@
   "plugins": [
     "tiddlywiki/tiddlyweb",
     "tiddlywiki/filesystem",
+    "tiddlywiki/markdown",
     "gera2ld/prism"
   ],
   "themes": [

@@ -1,6 +1,6 @@
-import fsPromises from 'fs/promises';
+import { readFile, readdir, mkdir, writeFile, stat, copyFile } from 'fs/promises';
 import path from 'path';
-import del from 'del';
+import { deleteAsync } from 'del';
 import components from 'prismjs/components.js';
 import { buildPrism, getFiles, resolveLanguages } from './plugin.mjs';
 
@@ -89,20 +89,33 @@ const userAliases = {
 };
 
 function clean() {
-  return del([DIST]);
+  return deleteAsync([DIST]);
 }
 
-async function loadPrismComponent(name) {
-  return fsPromises.readFile(`node_modules/prismjs/components/prism-${name}${isProd ? '.min' : ''}.js`, 'utf8');
+async function loadPrismJs(languages) {
+  const chunks = await Promise.all([
+    'components/prism-core',
+    ...languages.map(lang => `components/prism-${lang}`),
+    'plugins/line-numbers/prism-line-numbers',
+    'plugins/line-highlight/prism-line-highlight',
+  ].map(file => readFile(`node_modules/prismjs/${file}${isProd ? '.min' : ''}.js`, 'utf8')));
+  return [
+    ...chunks,
+    'Prism.manual = true',
+  ];
 }
 
 async function loadPrismCss(name) {
   const filename = name ? `prism-${name}.css` : 'prism.css';
-  return fsPromises.readFile(`node_modules/prismjs/themes/${filename}`, 'utf8');
+  return Promise.all([
+    readFile(`node_modules/prismjs/themes/${filename}`, 'utf8'),
+    readFile('node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css', 'utf8'),
+    readFile('node_modules/prismjs/plugins/line-highlight/prism-line-highlight.css', 'utf8'),
+  ]);
 }
 
 async function loadJSON(file) {
-  return JSON.parse(await fsPromises.readFile(file, 'utf8'));
+  return JSON.parse(await readFile(file, 'utf8'));
 }
 
 const getPkg = memoize(async () => loadJSON('package.json'));
@@ -115,14 +128,14 @@ const getValues = memoize(async () => {
   };
 });
 const getThemes = memoize(async () => {
-  const files = await fsPromises.readdir('node_modules/prismjs/themes');
+  const files = await readdir('node_modules/prismjs/themes');
   const themes = files.map(file => file.replace(/^prism(?:-(\w+))?\.css$/, (m, g) => m && (g || ''))).filter(v => v != null);
   return themes;
 });
 
 async function loadPluginFile(filename) {
   if (!filename.includes('.')) filename += '.tid';
-  let text = await fsPromises.readFile(`src/plugin/${filename}`, 'utf8');
+  let text = await readFile(`src/plugin/${filename}`, 'utf8');
   const values = await getValues();
   text = text.replace(/process\.env\.(\w+)/g, (m, g) => values[g] || m);
   return text;
@@ -154,14 +167,14 @@ async function build() {
     languages,
     theme: process.env.TW_PRISM_THEME || '',
     userAliases,
-    loadPrismComponent,
+    loadPrismJs,
     loadPrismCss,
   });
   const files = getFiles({ pluginInfo, tiddlers: [...tiddlers, ...prismTiddlers] });
   for (const file of files) {
     const fullpath = path.join(DIST_PRISM, file.path);
-    await fsPromises.mkdir(path.dirname(fullpath), { recursive: true });
-    await fsPromises.writeFile(fullpath, file.text, 'utf8');
+    await mkdir(path.dirname(fullpath), { recursive: true });
+    await writeFile(fullpath, file.text, 'utf8');
   }
 }
 
@@ -181,7 +194,7 @@ async function createMeta() {
     aliases,
     userAliases,
   };
-  await fsPromises.writeFile('src/pages/meta.json', JSON.stringify(meta, null, 2));
+  await writeFile('src/pages/meta.json', JSON.stringify(meta, null, 2));
 }
 
 function copyFixtures() {
@@ -189,18 +202,18 @@ function copyFixtures() {
 }
 
 async function copyDir(src, dest) {
-  const stat = await fsPromises.stat(dest).catch(() => {});
-  if (!stat?.isDirectory()) {
-    await fsPromises.mkdir(dest);
+  const statRes = await stat(dest).catch(() => {});
+  if (!statRes?.isDirectory()) {
+    await mkdir(dest);
   }
-  for (const item of await fsPromises.readdir(src)) {
+  for (const item of await readdir(src)) {
     const fullsrc = path.join(src, item);
     const fulldest = path.join(dest, item);
-    const stat = await fsPromises.stat(fullsrc);
-    if (stat.isDirectory()) {
+    const statRes = await stat(fullsrc);
+    if (statRes.isDirectory()) {
       await copyDir(fullsrc, fulldest);
     } else {
-      await fsPromises.copyFile(fullsrc, fulldest);
+      await copyFile(fullsrc, fulldest);
     }
   }
 }

@@ -1,0 +1,11 @@
+title: markdown
+type: text/x-markdown
+
+## Use with Markdown
+
+```js
+// prism: {"line":2}
+
+// Let's highlight line 2
+console.log('Hello, Markdown!');
+```

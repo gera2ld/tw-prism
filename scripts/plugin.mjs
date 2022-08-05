@@ -16,7 +16,7 @@ export async function buildPrism({
   languages,
   theme,
   userAliases,
-  loadPrismComponent,
+  loadPrismJs,
   loadPrismCss,
 }) {
   const unresolved = Object.keys(userAliases).find(key => !languages.includes(key));
@@ -26,11 +26,12 @@ export async function buildPrism({
   const footer = `(${aliases => Object.entries(aliases).forEach(([k, v]) => v.forEach(a => {
     Prism.languages[a] = Prism.languages[k];
   }))})(${JSON.stringify(userAliases)});module.exports=Prism`;
-  const [chunks, css] = await Promise.all([
-    Promise.all(['core', ...languages].map(loadPrismComponent)),
+  const [chunks, cssList] = await Promise.all([
+    loadPrismJs(languages),
     loadPrismCss(theme),
   ]);
   const js = [...chunks, footer].join(';\n');
+  const css = cssList.join('\n');
   return [
     {
       title: prefix + '/prism.js',

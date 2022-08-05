@@ -11,11 +11,26 @@ To add the plugin to your own ~TiddlyWiki, just drag the link below to your ~Tid
 
 Disable [[$:/plugins/tiddlywiki/highlight]] to make this plugin work.
 
+!! Features
+
+* Show line numbers
+* Highlight lines
+
+Edit this tiddler to see how it works.
+
+!! Demos
+
 ```js
+// prism: {"line":"2"}
+
+// We can even highlight lines:
 console.log('Hello, JavaScript!');
 ```
 
 ```py
+// prism: {"lineNumbers":false}
+
+# Line numbers can be hidden
 print('Hello, Python!')
 ```
 

@@ -17,15 +17,15 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "prismjs": "^1.27.0"
+    "prismjs": "^1.28.0"
   },
   "devDependencies": {
-    "@gera2ld/plaid": "^2.5.2",
-    "@gera2ld/plaid-webpack": "^2.5.0",
-    "@gera2ld/plaid-webpack-svelte": "^2.5.0",
-    "del": "^6.0.0",
-    "svelte": "^3.46.4",
-    "tiddlywiki": "^5.2.2"
+    "@gera2ld/plaid": "~2.5.5",
+    "@gera2ld/plaid-webpack": "~2.5.3",
+    "@gera2ld/plaid-webpack-svelte": "~2.5.4",
+    "del": "^7.0.0",
+    "svelte": "^3.49.0",
+    "tiddlywiki": "^5.2.3"
   },
   "repository": "git@github.com:gera2ld/tw-prism.git"
 }
