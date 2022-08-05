@@ -1,9 +1,9 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@gera2ld/plaid': ^2.5.5
-  '@gera2ld/plaid-webpack': ^2.5.3
-  '@gera2ld/plaid-webpack-svelte': ^2.5.4
+  '@gera2ld/plaid': ~2.5.5
+  '@gera2ld/plaid-webpack': ~2.5.3
+  '@gera2ld/plaid-webpack-svelte': ~2.5.4
   del: ^7.0.0
   prismjs: ^1.28.0
   svelte: ^3.49.0
@@ -7020,6 +7020,7 @@ packages:
     engines: {node: '>=0.8.2'}
     hasBin: true
     dev: true
+    bundledDependencies: []
 
   /to-fast-properties/2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
