@@ -92,26 +92,8 @@ function clean() {
   return deleteAsync([DIST]);
 }
 
-async function loadPrismJs(languages) {
-  const chunks = await Promise.all([
-    'components/prism-core',
-    ...languages.map(lang => `components/prism-${lang}`),
-    'plugins/line-numbers/prism-line-numbers',
-    'plugins/line-highlight/prism-line-highlight',
-  ].map(file => readFile(`node_modules/prismjs/${file}${isProd ? '.min' : ''}.js`, 'utf8')));
-  return [
-    ...chunks,
-    'Prism.manual = true',
-  ];
-}
-
-async function loadPrismCss(name) {
-  const filename = name ? `prism-${name}.css` : 'prism.css';
-  return Promise.all([
-    readFile(`node_modules/prismjs/themes/${filename}`, 'utf8'),
-    readFile('node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css', 'utf8'),
-    readFile('node_modules/prismjs/plugins/line-highlight/prism-line-highlight.css', 'utf8'),
-  ]);
+function loadPrismFile(file) {
+  return readFile(`node_modules/prismjs/${file}`, 'utf8');
 }
 
 async function loadJSON(file) {
@@ -129,9 +111,29 @@ const getValues = memoize(async () => {
 });
 const getThemes = memoize(async () => {
   const files = await readdir('node_modules/prismjs/themes');
-  const themes = files.map(file => file.replace(/^prism(?:-(\w+))?\.css$/, (m, g) => m && (g || ''))).filter(v => v != null);
-  return themes;
+  const themes = files.map(file => file.match(/^prism(?:-(\w+))?\.css|$/)[1]).filter(Boolean);
+  return ['', ...themes];
 });
+
+const getAllPlugins = memoize(async () => {
+  const pluginDir = 'node_modules/prismjs/plugins';
+  const items = await readdir(pluginDir);
+  return Promise.all(items.map(async item => {
+    const [js, css] = await Promise.all([
+      stat(`${pluginDir}/${item}/prism-${item}.js`).catch(() => {}),
+      stat(`${pluginDir}/${item}/prism-${item}.css`).catch(() => {}),
+    ]);
+    return js && {
+      name: item,
+      css: !!css,
+    };
+  }));
+});
+
+const defaultPlugins = [
+  'line-numbers',
+  'line-highlight',
+];
 
 async function loadPluginFile(filename) {
   if (!filename.includes('.')) filename += '.tid';
@@ -162,13 +164,14 @@ async function loadData() {
 
 async function build() {
   const { pluginInfo, tiddlers } = await loadData();
+  const allPlugins = await getAllPlugins();
   const prismTiddlers = await buildPrism({
     prefix: PREFIX,
     languages,
+    plugins: defaultPlugins.map(name => allPlugins.find(item => item.name === name)),
     theme: process.env.TW_PRISM_THEME || '',
     userAliases,
-    loadPrismJs,
-    loadPrismCss,
+    loadPrismFile,
   });
   const files = getFiles({ pluginInfo, tiddlers: [...tiddlers, ...prismTiddlers] });
   for (const file of files) {
@@ -182,13 +185,16 @@ async function createMeta() {
   const { pluginInfo, tiddlers } = await loadData();
   const themes = await getThemes();
   const prismPkg = await getPrismPkg();
+  const allPlugins = await getAllPlugins();
   const meta = {
     pluginInfo,
     tiddlers,
     prismVersion: prismPkg.version,
     prefix: PREFIX,
     allLanguages,
+    allPlugins,
     defaultLanguages,
+    defaultPlugins,
     dependencies,
     themes,
     aliases,
@@ -234,9 +240,12 @@ function ensureArray(data) {
 
 async function main() {
   await clean();
+  await createMeta();
   await build();
   await copyFixtures();
-  await createMeta();
 }
 
-main();
+main().catch(err => {
+  console.error(err);
+  process.exitCode = 1;
+});

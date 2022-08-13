@@ -11,13 +11,40 @@ export function buildPluginUrl({ pluginInfo, tiddlers, prismTiddlers }) {
   return 'data:text/vnd.tiddler,' + encodeURIComponent(JSON.stringify(jsonData));
 }
 
+function buildPrismJs(loadPrismFile, minified) {
+  return async (languages, plugins) => {
+    const files = [
+      'components/prism-core',
+      ...languages.map(lang => `components/prism-${lang}`),
+      ...plugins.map(plugin => `plugins/${plugin}/prism-${plugin}`),
+    ].map(file => `${file}${minified ? '.min' : ''}.js`);
+    const chunks = await Promise.all(files.map(loadPrismFile));
+    return [
+      ...chunks,
+      'Prism.manual = true',
+    ];
+  };
+}
+
+function buildPrismCss(loadPrismFile, minified) {
+  return async (theme, plugins) => {
+    const files = [
+      `themes/prism${theme ? '-' + theme : ''}`,
+      ...plugins.map(plugin => `plugins/${plugin}/prism-${plugin}`),
+    ].map(file => `${file}${minified ? '.min' : ''}.css`);
+    const chunks = await Promise.all(files.map(loadPrismFile));
+    return chunks;
+  };
+}
+
 export async function buildPrism({
   prefix,
   languages,
+  plugins,
   theme,
+  minified,
   userAliases,
-  loadPrismJs,
-  loadPrismCss,
+  loadPrismFile,
 }) {
   const unresolved = Object.keys(userAliases).find(key => !languages.includes(key));
   if (unresolved) {
@@ -27,8 +54,8 @@ export async function buildPrism({
     Prism.languages[a] = Prism.languages[k];
   }))})(${JSON.stringify(userAliases)});module.exports=Prism`;
   const [chunks, cssList] = await Promise.all([
-    loadPrismJs(languages),
-    loadPrismCss(theme),
+    buildPrismJs(loadPrismFile, minified)(languages, plugins.map(({ name }) => name)),
+    buildPrismCss(loadPrismFile, minified)(theme, plugins.filter(({ css }) => css).map(({ name }) => name)),
   ]);
   const js = [...chunks, footer].join(';\n');
   const css = cssList.join('\n');
