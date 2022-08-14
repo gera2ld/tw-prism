@@ -31,20 +31,22 @@ CodeBlockWidget.prototype.postRender = function postRender() {
         }
         if (config) code.textContent = text.slice(i + 2);
       }
-      Object.entries(config).forEach(([key, value]) => {
-        if (['class', 'className'].includes(key)) {
-          value.split(' ').filter(Boolean).forEach(item => {
-            if (item.startsWith('!')) {
-              domNode.classList.remove(item.slice(1));
-            } else {
-              domNode.classList.add(item);
-            }
-          });
-        } else {
-          if (key === 'line') key = 'data-line';
-          domNode.setAttribute(key, value);
-        }
-      });
+      if (config) {
+        Object.entries(config).forEach(([key, value]) => {
+          if (['class', 'className'].includes(key)) {
+            value.split(' ').filter(Boolean).forEach(item => {
+              if (item.startsWith('!')) {
+                domNode.classList.remove(item.slice(1));
+              } else {
+                domNode.classList.add(item);
+              }
+              });
+          } else {
+            if (key === 'line') key = 'data-line';
+            domNode.setAttribute(key, value);
+          }
+        });
+      }
       Prism.highlightElement(code);
     } else {
       const text = domNode.textContent;
