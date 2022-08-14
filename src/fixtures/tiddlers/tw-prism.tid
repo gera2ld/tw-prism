@@ -16,21 +16,55 @@ Disable [[$:/plugins/tiddlywiki/highlight]] to make this plugin work.
 * Show line numbers
 * Highlight lines
 
-Edit this tiddler to see how it works.
+!! How to Use?
+
+It should work out of the box.
+If you want to change the default options, you can insert a comment followed by an empty line before the original contents:
+
+```py
+# prism: {}
+
+# prism: {/* config as a JSON object */}
+
+original contents here
+```
+
+The whole config will be regarded as DOM attributes and applied to the wrapper element of the code block (aka. the `<pre>` element), see plugin documents for more details.
+
+There are several exceptions:
+
+* `class` or `className` can both be used to add class names. An existing class name can be removed by prepending `!`
+* `line` is short for `data-line`
+
+Examples:
+
+```py
+# prism: {}
+
+Disable line numbers
+# prism: {"class":"!line-numbers"}
+
+Highlight line 2-4
+# prism: {"line":"2-4"}
+or
+# prism: {"data-line":"2-4"}
+```
+
+Edit this tiddler to see more examples.
 
 !! Demos
 
 ```js
 // prism: {"line":"2"}
 
-// We can even highlight lines:
+// Highlight next line
 console.log('Hello, JavaScript!');
 ```
 
 ```py
-// prism: {"lineNumbers":false}
+# prism: {"class":"!line-numbers"}
 
-# Line numbers can be hidden
+# Hide line numbers
 print('Hello, Python!')
 ```
 

@@ -13,7 +13,8 @@ CodeBlockWidget.prototype.postRender = function postRender() {
   const domNode = this.domNodes[0];
   const { language } = this;
   // Make sure a `language-` class name is added so that the codeblocks will have the same appearance
-  domNode.className = `language-${(language || '').toLowerCase()}`;
+  // Enable line-numbers by default
+  domNode.className = `language-${(language || '').toLowerCase()} line-numbers`;
   if (language && Prism.languages[language]) {
     if ($tw.browser && !domNode.isTiddlyWikiFakeDom) {
       const code = domNode.querySelector('code');
@@ -30,8 +31,20 @@ CodeBlockWidget.prototype.postRender = function postRender() {
         }
         if (config) code.textContent = text.slice(i + 2);
       }
-      if (config?.line) domNode.dataset.line = config.line;
-      if (config?.lineNumbers !== false) domNode.classList.add('line-numbers');
+      Object.entries(config).forEach(([key, value]) => {
+        if (['class', 'className'].includes(key)) {
+          value.split(' ').filter(Boolean).forEach(item => {
+            if (item.startsWith('!')) {
+              domNode.classList.remove(item.slice(1));
+            } else {
+              domNode.classList.add(item);
+            }
+          });
+        } else {
+          if (key === 'line') key = 'data-line';
+          domNode.setAttribute(key, value);
+        }
+      });
       Prism.highlightElement(code);
     } else {
       const text = domNode.textContent;

@@ -5,3 +5,5 @@ This is a TiddlyWiki plugin for syntax highlight with PrismJS.
 Make sure [[$:/plugins/tiddlywiki/highlight]] is disabled, otherwise this plugin may not work.
 
 [[Source code|https://github.com/gera2ld/tw-prism]]
+
+[[Demo|https://gera2ld.github.io/tw-prism/]]
