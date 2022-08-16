@@ -6,13 +6,9 @@ exports.pages = {
       title: 'PrismJS for TiddlyWiki',
       js: [
         {
-          content: `var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?76a3135860c647b9dbd880a1ce22427a";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();`,
+          defer: true,
+          src: 'https://pl.gerald.win/js/script.js',
+          'data-domain': 'gera2ld.github.io',
         },
       ],
     },

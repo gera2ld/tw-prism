@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@gera2ld/plaid': ~2.5.5
-  '@gera2ld/plaid-webpack': ~2.5.3
+  '@gera2ld/plaid-webpack': ~2.5.7-alpha.2
   '@gera2ld/plaid-webpack-svelte': ~2.5.4
   del: ^7.0.0
   prismjs: ^1.28.0
@@ -14,7 +14,7 @@ dependencies:
 
 devDependencies:
   '@gera2ld/plaid': 2.5.5
-  '@gera2ld/plaid-webpack': 2.5.3_@gera2ld+plaid@2.5.5
+  '@gera2ld/plaid-webpack': 2.5.7-alpha.2_@gera2ld+plaid@2.5.5
   '@gera2ld/plaid-webpack-svelte': 2.5.4_syvnj5hs3qrh6cv5nx5qgqkn5a
   del: 7.0.0
   svelte: 3.49.0
@@ -1361,8 +1361,8 @@ packages:
       - typescript
     dev: true
 
-  /@gera2ld/plaid-webpack/2.5.3_@gera2ld+plaid@2.5.5:
-    resolution: {integrity: sha512-CQixBpKE49lF4e9gJd7v2maSNtyvjExO97LQdpxLDOTYerkI8w0eptoxhAWMzSbp41yNRmdKxBGVsYJpgEk6SQ==}
+  /@gera2ld/plaid-webpack/2.5.7-alpha.2_@gera2ld+plaid@2.5.5:
+    resolution: {integrity: sha512-VUl4i3skh4bJcrz+L9OxFB8F7drCOb1Y17SIID1kxhvhco5HJonYhGD3XFaGWIkCKwORAjFvN7ijlvLzy4E9Ww==}
     peerDependencies:
       '@gera2ld/plaid': 2.x
     dependencies:
